@@ -5,7 +5,8 @@
   "main": "static/js/app.js",
   "dependencies": {
     "highcharts": "^5.0.9",
-    "lodash": "^4.17.4"
+    "lodash": "^4.17.4",
+    "moment": "^2.18.1"
   },
   "devDependencies": {
     "webpack": "^2.3.2"

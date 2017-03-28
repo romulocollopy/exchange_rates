@@ -1,109 +1,9 @@
 var Highcharts = require('highcharts');
 var $ = require('jquery');
 var _ = require('lodash');
+var moment = require('moment');
+
 const API_KEY = '9487d48ee7b7cdc42287b3e8879caa57'
-
-const DATA_OBJ = [
-    {
-      "success":true,
-      "terms":"https:\/\/currencylayer.com\/terms",
-      "privacy":"https:\/\/currencylayer.com\/privacy",
-      "historical":true,
-      "date":"2017-03-22",
-      "timestamp":1490227199,
-      "source":"USD",
-      "quotes":{
-        "USDBRL":3.085803,
-        "USDARS":15.619022,
-        "USDEUR":0.926403
-      }
-    },
-    {
-      "success":true,
-      "terms":"https:\/\/currencylayer.com\/terms",
-      "privacy":"https:\/\/currencylayer.com\/privacy",
-      "historical":true,
-      "date":"2017-03-23",
-      "timestamp":1490313599,
-      "source":"USD",
-      "quotes":{
-        "USDBRL":3.139496,
-        "USDARS":15.579937,
-        "USDEUR":0.927099
-      }
-    },
-    {
-      "success":true,
-      "terms":"https:\/\/currencylayer.com\/terms",
-      "privacy":"https:\/\/currencylayer.com\/privacy",
-      "historical":true,
-      "date":"2017-03-24",
-      "timestamp":1490399999,
-      "source":"USD",
-      "quotes":{
-        "USDBRL":3.107504,
-        "USDARS":15.590402,
-        "USDEUR":0.925804
-      }
-    },
-    {
-      "success":true,
-      "terms":"https:\/\/currencylayer.com\/terms",
-      "privacy":"https:\/\/currencylayer.com\/privacy",
-      "historical":true,
-      "date":"2017-03-25",
-      "timestamp":1490486399,
-      "source":"USD",
-      "quotes":{
-        "USDBRL":3.107504,
-        "USDARS":15.590402,
-        "USDEUR":0.925804
-      }
-    },
-    {
-      "success":true,
-      "terms":"https:\/\/currencylayer.com\/terms",
-      "privacy":"https:\/\/currencylayer.com\/privacy",
-      "historical":true,
-      "date":"2017-03-26",
-      "timestamp":1490572799,
-      "source":"USD",
-      "quotes":{
-        "USDBRL":3.107302,
-        "USDARS":15.589026,
-        "USDEUR":0.921597
-      }
-    },
-    {
-      "success":true,
-      "terms":"https:\/\/currencylayer.com\/terms",
-      "privacy":"https:\/\/currencylayer.com\/privacy",
-      "historical":true,
-      "date":"2017-03-27",
-      "timestamp":1490659199,
-      "source":"USD",
-      "quotes":{
-        "USDBRL":3.1259,
-        "USDARS":15.564049,
-        "USDEUR":0.920505
-      }
-    },
-    {
-      "success":true,
-      "terms":"https:\/\/currencylayer.com\/terms",
-      "privacy":"https:\/\/currencylayer.com\/privacy",
-      "historical":true,
-      "date":"2017-03-28",
-      "timestamp":1490710268,
-      "source":"USD",
-      "quotes":{
-        "USDBRL":3.128976,
-        "USDARS":15.528986,
-        "USDEUR":0.920701
-      }
-    }
-];
-
 const CURRENCY_KEYS = {
     'BRL': {name: 'Brazilian Reais', quote_name: "USDBRL"},
     'EUR': {name: 'Euros', quote_name: "USDEUR"},
@@ -114,8 +14,7 @@ const CURRENCY_KEYS = {
 function ChartView(){
     var self = this;
     self.setButtonActions();
-    self.apiData = self.fetchAPIData();
-    self.data = self.getData();
+    self.fetchAPIData();
 }
 
 ChartView.prototype.getData = function(){
@@ -142,12 +41,36 @@ ChartView.prototype.setButtonActions = function(){
     });
 }
 
+ChartView.prototype.onSuccess = function(){
+    var self = this;
+    if (self.apiData === undefined){
+        self.apiData = [];
+    }
+    return function(data){
+        self.apiData.push(data);
+        if (self.apiData.length === 7){
+            self.apiData = _.sortBy(self.apiData, function(o){return o.timestamp});
+            self.data = self.getData();
+            self.plotChart();
+        }
+    }
+}
+
 ChartView.prototype.fetchAPIData = function(){
-    return DATA_OBJ;
+    var self = this;
+    for (var counter = 0; counter < 8; counter++){
+        var date = moment().subtract(counter, "days").format('YYYY-MM-DD')
+        $.ajax({
+            url: 'http://apilayer.net/api/historical?access_key=' + API_KEY + '&date=' + date + '&currencies=BRL,ARS,EUR',
+            dataType: 'json',
+            success: self.onSuccess(),
+        });
+    }
 };
 
 ChartView.prototype.plotChart = function (currency_key){
     var self = this;
+    currency_key = currency_key || "BRL";
     var currency = self.data[currency_key];
     self.chart = Highcharts.chart(chart, {
         chart: {
@@ -202,4 +125,3 @@ ChartView.prototype.plotChart = function (currency_key){
 }
 
 chartView = new ChartView();
-chartView.plotChart("BRL");
