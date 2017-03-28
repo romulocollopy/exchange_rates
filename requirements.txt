@@ -12,3 +12,4 @@ pip-tools==1.8.1
 psycopg2==2.7.1
 python-decouple==3.0
 six==1.10.0               # via pip-tools
+whitenoise==3.3.0
