@@ -22,7 +22,7 @@ ChartView.prototype.getData = function(){
     return _.mapValues(CURRENCY_KEYS, function(o){
         return {
             name: o.name,
-            data: _.map(self.apiData, n => {
+            data: _.map(self.apiData, function(n) {
                 return [ n.timestamp * 1000, n.quotes[o.quote_name] ]
             })
         }
