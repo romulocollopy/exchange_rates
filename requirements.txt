@@ -8,6 +8,7 @@ click==6.7                # via pip-tools
 dj-database-url==0.4.2
 django==1.10.6
 first==2.0.1              # via pip-tools
+gunicorn==19.7.1
 pip-tools==1.8.1
 psycopg2==2.7.1
 python-decouple==3.0
