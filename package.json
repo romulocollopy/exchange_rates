@@ -4,7 +4,8 @@
   "description": "Shows Real, Euro and Pesos Argentinos exchange rate",
   "main": "static/js/app.js",
   "dependencies": {
-    "highcharts": "^5.0.9"
+    "highcharts": "^5.0.9",
+    "lodash": "^4.17.4"
   },
   "devDependencies": {
     "webpack": "^2.3.2"
