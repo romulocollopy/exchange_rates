@@ -1,7 +1,6 @@
 var Highcharts = require('highcharts');
 var $ = require('jquery');
 var _ = require('lodash');
-var moment = require('moment');
 
 const CURRENCY_KEYS = {
     'BRL': {name: 'Brazilian Reais', quote_name: "brl"},
