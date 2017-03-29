@@ -1,5 +1,8 @@
 import datetime
+
 from django.test import TestCase
+from django.db import IntegrityError
+
 from model_mommy import mommy
 
 from src.core.models import DailyExchangeRate
@@ -20,3 +23,9 @@ class DailyExchangeRateTest(TestCase):
         self.assertIsInstance(der.brl, float)
         self.assertIsInstance(der.ars, float)
         self.assertIsInstance(der.eur, float)
+
+    def test_date_is_unique(self):
+        date = '2017-01-03'
+        mommy.make(DailyExchangeRate, date=date)
+        with self.assertRaises(IntegrityError):
+            mommy.make(DailyExchangeRate, date=date)
