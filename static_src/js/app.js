@@ -5,9 +5,9 @@ var moment = require('moment');
 
 const API_KEY = '9487d48ee7b7cdc42287b3e8879caa57'
 const CURRENCY_KEYS = {
-    'BRL': {name: 'Brazilian Reais', quote_name: "USDBRL"},
-    'EUR': {name: 'Euros', quote_name: "USDEUR"},
-    'ARS': {name: 'Pesos Argentinos', quote_name: "USDARS"}
+    'BRL': {name: 'Brazilian Reais', quote_name: "brl"},
+    'EUR': {name: 'Euros', quote_name: "eur"},
+    'ARS': {name: 'Pesos Argentinos', quote_name: "ars"}
 };
 
 
@@ -23,7 +23,7 @@ ChartView.prototype.getData = function(){
         return {
             name: o.name,
             data: _.map(self.apiData, function(n) {
-                return [ n.timestamp * 1000, n.quotes[o.quote_name] ]
+                return [ n.timestamp * 1000, n[o.quote_name] ]
             })
         }
     });
@@ -43,29 +43,20 @@ ChartView.prototype.setButtonActions = function(){
 
 ChartView.prototype.onSuccess = function(){
     var self = this;
-    if (self.apiData === undefined){
-        self.apiData = [];
-    }
     return function(data){
-        self.apiData.push(data);
-        if (self.apiData.length === 7){
-            self.apiData = _.sortBy(self.apiData, function(o){return o.timestamp});
-            self.data = self.getData();
-            self.plotChart();
-        }
+        self.apiData = _.sortBy(data, function(o){return o.timestamp});
+        self.data = self.getData();
+        self.plotChart();
     }
 }
 
 ChartView.prototype.fetchAPIData = function(){
     var self = this;
-    for (var counter = 0; counter < 8; counter++){
-        var date = moment().subtract(counter, "days").format('YYYY-MM-DD')
-        $.ajax({
-            url: 'http://apilayer.net/api/historical?access_key=' + API_KEY + '&date=' + date + '&currencies=BRL,ARS,EUR',
-            dataType: 'json',
-            success: self.onSuccess(),
-        });
-    }
+    $.ajax({
+        url: '/api/',
+        dataType: 'json',
+        success: self.onSuccess(),
+    });
 };
 
 ChartView.prototype.plotChart = function (currency_key){
