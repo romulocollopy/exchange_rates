@@ -1,0 +1,26 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.13.0]
+    method: GET
+    uri: http://apilayer.net/api/historical?access_key=9487d48ee7b7cdc42287b3e8879caa57&currencies=BRL,ARS,EUR&date=2017-03-01
+  response:
+    body: {string: '{"success":true,"terms":"https:\/\/currencylayer.com\/terms","privacy":"https:\/\/currencylayer.com\/privacy","historical":true,"date":"2017-03-01","timestamp":1488412799,"source":"USD","quotes":{"USDBRL":3.088801,"USDARS":15.398977,"USDEUR":0.948802}}'}
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Connection: [Keep-Alive]
+      Content-Length: ['252']
+      Content-Type: [application/json; Charset=UTF-8]
+      Date: ['Wed, 29 Mar 2017 18:55:21 GMT']
+      Etag: [ff7c16278ecf2b7ed1010a70d0f0b583]
+      Keep-Alive: ['timeout=5, max=100']
+      Last-Modified: ['Wed, 01 Mar 2017 23:59:59 GMT']
+      Server: [Apache/2.4.7 (Ubuntu)]
+      X-Apilayer-Transaction-Id: [5247d9b5-9b44-4eb8-a4a5-794657ca4d07]
+      X-Powered-By: [PHP/5.5.9-1ubuntu4.14]
+    status: {code: 200, message: OK}
+version: 1

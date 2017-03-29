@@ -18,7 +18,7 @@ import decouple
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = Path(__file__).parents[1]
-
+CURRENCYLAYER_API_KEY= decouple.config('CURRENCYLAYER_API_KEY')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
