@@ -6,7 +6,10 @@ module.exports = function(env) {
     return {
         entry: {
             main: path.resolve(__dirname, 'static_src/js/app.js'),
-            vendor: ['highcharts', 'jquery', 'moment', 'lodash']
+            highcharts: 'highcharts',
+            jquery: 'jquery',
+            lodash: 'lodash',
+            moment: 'moment'
         },
         output: {
             filename: '[name].js',
@@ -15,8 +18,8 @@ module.exports = function(env) {
         plugins: [
             new UglifyJSPlugin(),
             new webpack.optimize.CommonsChunkPlugin(
-                {name: "vendor", filename:"vendor.bundle.js",
-                    minChunk: "infinity"})
+                {names: ["highcharts", "jquery", "lodash", "moment"]}
+            )
           ]
     }
 }
