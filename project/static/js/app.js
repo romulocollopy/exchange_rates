@@ -1,8 +1,4 @@
-var Highcharts = require('highcharts');
-var $ = require('jquery');
-var _ = require('lodash');
-
-const CURRENCY_KEYS = {
+var CURRENCY_KEYS = {
     'BRL': {name: 'Brazilian Reais', quote_name: "brl"},
     'EUR': {name: 'Euros', quote_name: "eur"},
     'ARS': {name: 'Pesos Argentinos', quote_name: "ars"}
@@ -17,14 +13,21 @@ function ChartView(){
 
 ChartView.prototype.getData = function(){
     var self = this;
-    return _.mapValues(CURRENCY_KEYS, function(o){
-        return {
-            name: o.name,
-            data: _.map(self.apiData, function(n) {
-                return [ n.timestamp * 1000, n[o.quote_name] ]
-            })
+    var data = {};
+    for (var c in CURRENCY_KEYS){
+        var _data = []
+        for (var i = 0; i < self.apiData.length; i++){
+            _data.push([
+                self.apiData[i]['timestamp'] * 1000,
+                self.apiData[i][CURRENCY_KEYS[c]['quote_name']]
+            ]);
         }
-    });
+        data[c] = {
+            name: CURRENCY_KEYS[c]['name'],
+            data: _data
+        }
+    }
+    return data;
 }
 
 ChartView.prototype.setButtonActions = function(){
@@ -42,7 +45,7 @@ ChartView.prototype.setButtonActions = function(){
 ChartView.prototype.onSuccess = function(){
     var self = this;
     return function(data){
-        self.apiData = _.sortBy(data, function(o){return o.timestamp});
+        self.apiData = data;
         self.data = self.getData();
         self.plotChart();
     }
