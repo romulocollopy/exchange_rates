@@ -10,3 +10,6 @@ class DailyExchangeRate(models.Model):
     brl = models.FloatField()
     ars = models.FloatField()
     eur = models.FloatField()
+
+    class Meta:
+        ordering = 'date',
