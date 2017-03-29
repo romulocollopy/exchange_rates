@@ -3,7 +3,6 @@ var $ = require('jquery');
 var _ = require('lodash');
 var moment = require('moment');
 
-const API_KEY = '9487d48ee7b7cdc42287b3e8879caa57'
 const CURRENCY_KEYS = {
     'BRL': {name: 'Brazilian Reais', quote_name: "brl"},
     'EUR': {name: 'Euros', quote_name: "eur"},
