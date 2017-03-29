@@ -9,5 +9,8 @@ build:
 	python project/manage.py migrate
 	python project/manage.py collectstatic
 
-make run:
+run:
 	python project/manage.py runserver
+
+test:
+	python project/manage.py test -n
